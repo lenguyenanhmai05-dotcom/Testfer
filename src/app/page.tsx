@@ -27,10 +27,12 @@ export default function Home() {
           .select("*")
           .order("created_at", { ascending: false });
 
-        if (error) throw error;
+        if (error) {
+          console.warn("Supabase fetch failed (likely table missing):", error.message);
+          throw error;
+        }
         setResources(data || []);
-      } catch (error) {
-        console.error("Error fetching resources:", error);
+      } catch (err) {
         // Fallback to dummy data for styling if table doesn't exist yet
         setResources([
           { id: "1", title: "Next.js Documentation", url: "https://nextjs.org", category: "Next.js", image_url: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=400&auto=format&fit=crop" },
